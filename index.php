@@ -9,7 +9,6 @@ if($_GET['city']){
 
     $file_headers = @get_headers("http://www.weather-forecast.com/locations/".$city."/forecasts/latest");
         
-        
         if($file_headers[0] == 'HTTP/1.1 404 Not Found') {
     
             $error = "That city could not be found.";
@@ -19,24 +18,24 @@ if($_GET['city']){
             $cast = file_get_contents('http://www.weather-forecast.com/locations/'.$city.'/forecasts/latest');
 
 
-            $firstExplode = explode('3 Day Weather Forecast Summary:</b><span class="read-more-small"><span class="read-more-content"> <span class="phrase">', $cast);
+             $firstExplode = explode('</h2>(1&ndash;3 days)</span><p class="b-forecast__table-description-content"><span class="phrase">', $cast);
 
-            if(sizeof($firstExplode) > 1){
+             if(sizeof($firstExplode) > 1){
 
-                $secondExplode = explode('</span></span></span>', $firstExplode[1]);
+                 $secondExplode = explode('</span></p></td><td colspan="9">', $firstExplode[1]);
 
-              }else{
+               }else{
 
-                  $error = "That city could not be found.";
-              }
+                   $error = "That city could not be found.";
+               }
 
-            if(sizeof($secondExplode) > 1){
+             if(sizeof($secondExplode) > 1){
 
-                  $weather = $secondExplode[0];
-              }else{
+                   $weather = $secondExplode[0];
+               }else{
 
-                  $error = "That city could not be found.";
-              }   
+                   $error = "That city could not be found.";
+               }   
           }    
     
 }
@@ -77,13 +76,11 @@ if($_GET['city']){
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 
-        <dir id="error"><? 
+        <dir id="error"><?php
 
             if($weather){
 
-                echo '<div class="alert alert-success" role="alert">
-  '.$weather.'
-</div>';
+                echo '<div class="alert alert-success" role="alert">'.$weather.'</div>';
 
             }else if($error){
 
